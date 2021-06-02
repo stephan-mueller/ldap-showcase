@@ -21,9 +21,3 @@ or
 ```shell
 docker run -p 8080:8080 ldap-showcase/ldap-service:0
 ```
-
-# TODO:
-
-- Zugriff auf user
-
-- über jndi
