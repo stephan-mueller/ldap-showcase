@@ -15,16 +15,29 @@
  */
 package de.openknowledge.ldap.service;
 
-import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Path("/hello")
-@Singleton
-public class HelloController {
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.naming.directory.SearchResult;
 
-    @GET
-    public String sayHello() {
-        return "Hello World";
-    }
+@ApplicationScoped
+public class PersonService {
+
+  private static final Logger LOG = LoggerFactory.getLogger(PersonService.class);
+
+  @Inject
+  LdapConnection ldap;
+
+  public PersonService() {
+  }
+
+  public Person getPersonById(final String uid) throws Exception {
+    LOG.info("Get person by id: {}", uid);
+
+    SearchResult person = ldap.findUserById(uid);
+
+    return new Person(person);
+  }
 }

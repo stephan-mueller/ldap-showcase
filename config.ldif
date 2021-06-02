@@ -1,0 +1,37 @@
+dn: ou=people,dc=openknowledge,dc=de
+ou: people
+objectClass: top
+objectClass: organizationalUnit
+
+dn: cn=Max,ou=people,dc=openknowledge,dc=de
+mail: max.weis@openknowledge.de
+uid: 1
+sn: Weis
+cn: Max
+homePhone: 123456789
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+
+dn: cn=Stephan,ou=people,dc=openknowledge,dc=de
+mail: stephan.mueller@openknowledge.de
+uid: 2
+sn: Mueller
+cn: Stephan
+homePhone: 123456789
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+
+dn: cn=Christian,ou=people,dc=openknowledge,dc=de
+mail: christian.wansart@openknowledge.de
+uid: 3
+sn: Wansart
+cn: Christian
+homePhone: 123456789
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
