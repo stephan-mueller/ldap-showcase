@@ -1,5 +1,10 @@
 # ldap-showcase
 
+## OpenLDAP Credentials
+
+Default admin user: `cn=admin,dc=openknowledge,dc=de`
+Default admin password: `admin`
+
 ## Build the service
 
 Run the following command to build the service
@@ -10,14 +15,8 @@ mvn clean package
 
 ## Run the service
 
-Run one of the following commands to run the service
+Run one the following command to run the service and OpenLDAP
 
 ```shell
-mvn liberty:run
-```
-
-or
-
-```shell
-docker run -p 8080:8080 ldap-showcase/ldap-service:0
+docker compose up 
 ```
