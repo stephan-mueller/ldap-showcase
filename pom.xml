@@ -38,6 +38,8 @@
         <liberty.var.ldap.bind.dn>${env.LDAP_BIND_DN}</liberty.var.ldap.bind.dn>
         <!--suppress UnresolvedMavenProperty -->
         <liberty.var.ldap.bind.password>${env.LDAP_BIND_PASSWORD}</liberty.var.ldap.bind.password>
+        <!--suppress UnresolvedMavenProperty -->
+        <liberty.var.ldap.search.base>${env.LDAP_SEARCH_BASE}</liberty.var.ldap.search.base>
     </properties>
 
     <dependencies>

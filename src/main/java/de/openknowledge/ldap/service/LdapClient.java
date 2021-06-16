@@ -44,7 +44,7 @@ public class LdapClient {
   private String LDAP_PORT;
 
   @Inject
-  @ConfigProperty(name="LDAP_SEARCH_BASE", defaultValue = "ou=people,dc=openknowledge,dc=de")
+  @ConfigProperty(name="ldap.search.base", defaultValue = "ou=people,dc=openknowledge,dc=de")
   private String LDAP_SEARCH_BASE;
 
   @Inject
