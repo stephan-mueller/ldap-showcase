@@ -19,6 +19,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.naming.Context;
@@ -35,26 +36,38 @@ public class LdapClient {
   private static final Logger LOG = LoggerFactory.getLogger(LdapClient.class);
 
   @Inject
-  @ConfigProperty(name="LDAP_SERVER", defaultValue = "ldap://localhost:389")
-  private String LDAP_SERVER;
+  @ConfigProperty(name="ldap.host", defaultValue = "localhost")
+  private String LDAP_HOST;
 
   @Inject
-  @ConfigProperty(name="LDAP_SEARCH_BASE", defaultValue = "ou=people,dc=openknowledge,dc=de")
+  @ConfigProperty(name="ldap.port", defaultValue = "389")
+  private String LDAP_PORT;
+
+  @Inject
+  @ConfigProperty(name="ldap.search.base", defaultValue = "ou=people,dc=openknowledge,dc=de")
   private String LDAP_SEARCH_BASE;
 
   @Inject
-  @ConfigProperty(name="LDAP_USERNAME", defaultValue = "cn=admin,dc=openknowledge,dc=de")
+  @ConfigProperty(name="ldap.bind.dn", defaultValue = "cn=admin,dc=openknowledge,dc=de")
   private String LDAP_USERNAME;
 
   @Inject
-  @ConfigProperty(name="LDAP_PASSWORD", defaultValue = "admin")
+  @ConfigProperty(name="ldap.bind.password", defaultValue = "admin")
   private String LDAP_PASSWORD;
+
+  @PostConstruct
+  public void init(){
+    env.put(Context.SECURITY_AUTHENTICATION, "simple");
+    env.put(Context.SECURITY_PRINCIPAL, LDAP_USERNAME);
+    env.put(Context.SECURITY_CREDENTIALS, LDAP_PASSWORD);
+    env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+    env.put(Context.PROVIDER_URL, String.format("ldap://%s:%s", LDAP_HOST, LDAP_PORT));
+    env.put("java.naming.ldap.attributes.binary", "objectSID");
+  }
 
   private Hashtable<String, Object> env = new Hashtable<>();
 
   public SearchResult findUserById(final String uid) throws NamingException {
-    initEnv();
-
     InitialDirContext ctx = new InitialDirContext(env);
 
     String searchFilter = "(&(objectClass=person)(uid=" + uid + "))";
@@ -66,24 +79,14 @@ public class LdapClient {
 
     SearchResult searchResult = null;
     if (results.hasMoreElements()) {
-      searchResult = (SearchResult)results.nextElement();
+      searchResult = results.nextElement();
 
-      //make sure there is not another item available, there should be only 1 match
       if (results.hasMoreElements()) {
-        LOG.error("Matched multiple users for the uid: {}", uid);
+        LOG.warn("Matched multiple users for the uid: {}", uid);
         return null;
       }
     }
 
     return searchResult;
-  }
-
-  private void initEnv() {
-    env.put(Context.SECURITY_AUTHENTICATION, "simple");
-    env.put(Context.SECURITY_PRINCIPAL, LDAP_USERNAME);
-    env.put(Context.SECURITY_CREDENTIALS, LDAP_PASSWORD);
-    env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-    env.put(Context.PROVIDER_URL, LDAP_SERVER);
-    env.put("java.naming.ldap.attributes.binary", "objectSID");
   }
 }
