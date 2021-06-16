@@ -5,6 +5,7 @@
         <feature>jaxrs-2.1</feature>
         <feature>cdi-2.0</feature>
         <feature>mpConfig-2.0</feature>
+        <feature>ldapRegistry-3.0</feature>
     </featureManager>
 
     <variable name="default.http.port" defaultValue="8080"/>
@@ -14,6 +15,13 @@
     <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
 
     <webApplication location="ldap-service.war" contextRoot="${app.context.root}">
-        <classloader apiTypeVisibility="+third-party" />
+        <classloader apiTypeVisibility="+third-party"/>
     </webApplication>
+
+    <ldapRegistry baseDN="${ldap.base.dn}"
+                  host="${ldap.host}"
+                  port="${ldap.port}"
+                  ldapType="Custom"
+                  bindDN="${ldap.bind.dn}"
+                  bindPassword="${ldap.bind.password}"/>
 </server>
