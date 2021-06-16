@@ -30,13 +30,13 @@ import javax.naming.directory.SearchResult;
 import java.util.Hashtable;
 
 @ApplicationScoped
-public class LdapConnection {
+public class LdapClient {
 
-  private static final Logger LOG = LoggerFactory.getLogger(LdapConnection.class);
+  private static final Logger LOG = LoggerFactory.getLogger(LdapClient.class);
 
   @Inject
-  @ConfigProperty(name="LDAP_AD_SERVER", defaultValue = "ldap://localhost:389")
-  private String LDAP_AD_SERVER;
+  @ConfigProperty(name="LDAP_SERVER", defaultValue = "ldap://localhost:389")
+  private String LDAP_SERVER;
 
   @Inject
   @ConfigProperty(name="LDAP_SEARCH_BASE", defaultValue = "ou=people,dc=openknowledge,dc=de")
@@ -83,7 +83,7 @@ public class LdapConnection {
     env.put(Context.SECURITY_PRINCIPAL, LDAP_USERNAME);
     env.put(Context.SECURITY_CREDENTIALS, LDAP_PASSWORD);
     env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-    env.put(Context.PROVIDER_URL, LDAP_AD_SERVER);
+    env.put(Context.PROVIDER_URL, LDAP_SERVER);
     env.put("java.naming.ldap.attributes.binary", "objectSID");
   }
 }

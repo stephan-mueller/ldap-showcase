@@ -28,7 +28,7 @@ public class PersonService {
   private static final Logger LOG = LoggerFactory.getLogger(PersonService.class);
 
   @Inject
-  LdapConnection ldap;
+  LdapClient ldap;
 
   public PersonService() {
   }
